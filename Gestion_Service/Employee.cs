@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Web;
@@ -13,6 +14,7 @@ namespace Gestion_Service
     public class Employee
     {
         [DataMember()]
+        [Key]
         public String Id_Employee { get; set; }
         [DataMember()]
         public String Id_Fonction { get; set; }

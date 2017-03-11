@@ -26,7 +26,8 @@ namespace Gestion_Service
         public Repository(MySqlConnection existingConnection)
         {
             properties = GetProperties();
-            this.Context = new context(existingConnection);
+            existingConnection.Open();
+            this.Context = new context(existingConnection,false);
             StringBuilder builder;
             #region selectQuery
             builder = new StringBuilder();
@@ -160,9 +161,8 @@ namespace Gestion_Service
 
         public bool Login(string username, string password)
         {
-            // User u = Context.User.Find("a04");
-            // String user = Context.Database.SqlQuery<String>("SELECT Username From user WHERE Username='@user' AND Password='@pass';", new MySqlParameter("@user", username), new MySqlParameter("@pass", password)).Single();
-            String user = Context.Database.SqlQuery<String>("SELECT 'Username' FROM `user` WHERE Username='aymanelj' AND Password='aymanelj'").FirstOrDefault<String>();
+           
+            String user = Context.Database.SqlQuery<String>("SELECT Username From user WHERE Username= @user AND Password= @pass", new MySqlParameter("@user", username), new MySqlParameter("@pass", password)).FirstOrDefault<String>();
             
            if (username == user)
             {

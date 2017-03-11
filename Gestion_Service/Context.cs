@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Common;
 using System.Linq;
 using System.Web;
 using MySql.Data.Entity;
@@ -14,9 +15,10 @@ namespace Gestion_Service
     {
         public DbSet<Employee> employee { get; set; }
         public DbSet<User> User { get; set; }
-        public context(MySqlConnection existingConnection) 
-            
+        public context(DbConnection existingConnection,bool contextOwnsConnection) 
+            : base(existingConnection,contextOwnsConnection)
         {
+            
 
         }
     }
