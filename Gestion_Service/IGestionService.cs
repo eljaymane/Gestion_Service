@@ -14,6 +14,9 @@ namespace Gestion_Service
         [OperationContract]
         bool testDB();
 
+        [OperationContract()]
+        bool AddUser(string Username, string Password, int Id_employee, int Id_fonction);
+
         // TODO: Add your service operations here
     }
 

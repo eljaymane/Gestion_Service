@@ -1,95 +1,44 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
-using System.Data;
+//using System.Data;
+using Gestion_Service.DAL;
 using System.Data.Entity;
+using Gestion_Service.Models;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
-using System.Web;
+//using System.Web;
 
 namespace Gestion_Service
 {
 
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
-
+        private DbSet<TEntity> dbset;
         private ICollection<String> properties;
         private string entityKey = "";
-        private context Context;
-        private DataTable table;
-        private String selectQuery;
-        private String updateQuery;
-        private String deleteQuery;
-        private MySqlCommand selectCommand;
-        private MySqlCommand updateCommand;
-        private MySqlCommand deleteCommand;
-        public Repository(MySqlConnection existingConnection)
+        private entrepriseContext Context;
+       
+        //private String updateQuery;
+        //private MySqlCommand selectCommand;
+        //private MySqlCommand updateCommand;
+        //private MySqlCommand deleteCommand;
+        //private DataTable table;
+        public Repository()
         {
-            properties = GetProperties();
-            existingConnection.Open();
-            this.Context = new context(existingConnection,false);
-            StringBuilder builder;
-            #region selectQuery
-            builder = new StringBuilder();
-            builder.Append("SELECT");
-            Int32 i = 1;
-            foreach (var current in properties)
-            {
-                i += 1;
-                if (i < properties.Count())
-                {
-                    builder.Append(current + ",");
-                }
-                else
-                {
-                    builder.Append(current);
-                }
+            //properties = GetProperties();
+            
 
-            }
-            builder.Append(" FROM " + typeof(TEntity).ToString());
-            selectQuery = builder.ToString();
-            #endregion
-            #region updateQuery
-            builder = new StringBuilder();
-            builder.Append("UPDATE ");
-            i = 1;
-            foreach (var current in properties)
-            {
-                if (i < properties.Count())
-                {
-                    builder.Append(current + ",");
-                }
-                else
-                {
-                    builder.Append(current);
-                }
-
-            }
-            builder.Append(" SET ");
-            #endregion
-            #region deleteQuery
-            deleteQuery = "DELETE FROM " + typeof(TEntity).ToString() + "WHERE ";
-            #endregion
+            this.Context = new entrepriseContext();
+            
 
 
         }
 
         public bool Delete(string id)
         {
-            bool result = false;
-            try
-            {
-                if (entityKey.Contains("Id"))
-                {
-                    Context.Database.ExecuteSqlCommand(deleteQuery + "WHERE " + entityKey + "='@id'", new MySqlParameter("@id", id));
-                    result = true;
-                }
-            }
-            catch (Exception e)
-            {
-
-            }
-            return result;
+            return false;
 
         }
 
@@ -125,7 +74,13 @@ namespace Gestion_Service
 
         public bool Insert(TEntity obj)
         {
-            return false;
+            
+                //entrepriseInitiliazer e = new entrepriseInitiliazer();
+               // e.InitializeDatabase(Context);
+                
+                return true;
+                
+           
         }
 
         public bool Save()
@@ -135,7 +90,7 @@ namespace Gestion_Service
                 Context.SaveChanges();
                 return true;
             }
-            catch (Exception e)
+            catch 
             {
                 return false;
             }
@@ -148,7 +103,7 @@ namespace Gestion_Service
                 Context.Entry(obj).State = EntityState.Modified;
                 return true;
             }
-            catch (Exception e)
+            catch
             {
                 return false;
             }
